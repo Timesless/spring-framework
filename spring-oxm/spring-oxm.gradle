@@ -1,5 +1,12 @@
 description = "Spring Object/XML Marshalling"
 
+buildscript {
+	repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven{ url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+    }
+}
+
 configurations {
 	castor
 	jibx

@@ -1,28 +1,27 @@
 buildscript {
 	repositories {
+		maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
 		classpath("io.spring.gradle:propdeps-plugin:0.0.9.RELEASE")
 		classpath("io.spring.gradle:docbook-reference-plugin:0.3.1")
-		classpath("org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.16")
-		classpath("org.asciidoctor:asciidoctorj-epub3:1.5.0-alpha.7")
+		classpath("org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.17")
+		// classpath("org.asciidoctor:asciidoctorj-epub3:1.5.0-alpha.7")
 	}
 }
 
 // 3rd party plugin repositories can be configured in settings.gradle
 plugins {
-	id "com.gradle.build-scan" version "1.8"
-	id "io.spring.dependency-management" version "1.0.7.RELEASE" apply false
+	id "com.gradle.build-scan" version "2.0.2"
+	id "io.spring.dependency-management" version "1.0.8.RELEASE" apply false
 	id "org.jetbrains.kotlin.jvm" version "1.2.71" apply false
 	id "org.jetbrains.dokka" version "0.9.18"
 	id "org.asciidoctor.convert" version "1.5.6"
 }
 
-buildScan {
-	licenseAgreementUrl = "https://gradle.com/terms-of-service"
-	licenseAgree = "yes"
-}
+
 
 ext {
 	linkHomepage = "https://projects.spring.io/spring-framework"
@@ -254,7 +253,8 @@ configure(rootProject) {
 
 	apply plugin: "groovy"
 	apply from: "${gradleScriptDir}/jdiff.gradle"
-	apply from: "${gradleScriptDir}/docs.gradle"
+	// 2020年1月14日 取消 docs
+	// apply from: "${gradleScriptDir}/docs.gradle"
 
 	dependencyManagement {
 		imports {
@@ -290,7 +290,22 @@ configure(rootProject) {
 		archives distZip
 	}
 
-	task wrapper(type: Wrapper) {
+	/*task wrapper(type: Wrapper) {
+		description = "Generates gradlew[.bat] scripts"
+		gradleVersion = "4.4.1"
+
+		doLast() {
+			def gradleOpts = "-XX:MaxMetaspaceSize=1024m -Xmx1024m"
+			def gradleBatOpts = "$gradleOpts -XX:MaxHeapSize=256m"
+			File wrapperFile = file("gradlew")
+			wrapperFile.text = wrapperFile.text.replace("DEFAULT_JVM_OPTS=",
+					"GRADLE_OPTS=\"$gradleOpts \$GRADLE_OPTS\"\nDEFAULT_JVM_OPTS=")
+			File wrapperBatFile = file("gradlew.bat")
+			wrapperBatFile.text = wrapperBatFile.text.replace("set DEFAULT_JVM_OPTS=",
+					"set GRADLE_OPTS=$gradleBatOpts %GRADLE_OPTS%\nset DEFAULT_JVM_OPTS=")
+		}
+	}*/
+	wrapper {
 		description = "Generates gradlew[.bat] scripts"
 		gradleVersion = "4.4.1"
 
